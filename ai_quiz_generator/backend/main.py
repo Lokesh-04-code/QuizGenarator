@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import os
@@ -11,22 +11,14 @@ from vectorstore import create_vectorstore, load_vectorstore, reset_vectorstore
 from graph.graph_builder import build_graph
 
 
-app = FastAPI()
+app = FastAPI(title="AI Quiz Generator API", version="1.0.0")
 
-# CORS: allow localhost for dev + production frontend URL from env var
-allowed_origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-frontend_url = os.getenv("FRONTEND_URL")
-if frontend_url:
-    allowed_origins.append(frontend_url)
+# CORS configuration
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:3000").split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,7 +61,9 @@ async def generate_from_file(
         
         # 1. Process all uploaded documents
         for file in documents:
-            path = os.path.join("temp_docs", file.filename)
+            # Security: Sanitize filename
+            safe_filename = os.path.basename(file.filename)
+            path = os.path.join("temp_docs", safe_filename)
             with open(path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
             
@@ -77,7 +71,7 @@ async def generate_from_file(
             all_docs.extend(docs)
             
         if not all_docs:
-            return {"msg": "No valid text found in documents."}
+            raise HTTPException(status_code=400, detail="No valid text found in documents.")
             
         # Create temporary vectorstore for this request
         create_vectorstore(all_docs)
@@ -146,8 +140,7 @@ async def generate_from_file(
             questions.append({
                 "id": base_id + random.randint(1, 99999),
                 "text": q["question"],
-                "type": "yes-no"
-                ,
+                "type": "yes-no",
                 "options": ["Yes", "No"],
                 "correctAnswer": q["correct_answer"],
                 "explanation": q.get("explanation", "")
@@ -155,8 +148,10 @@ async def generate_from_file(
             
         return questions
 
+    except HTTPException:
+        raise
     except Exception as e:
-        return {"msg": f"Failed to generate quiz: {str(e)}"}
+        raise HTTPException(status_code=500, detail=f"Failed to generate quiz: {str(e)}")
         
     finally:
         # 3. Cleanup after generation
@@ -179,7 +174,7 @@ async def generate_from_topic(
 ):
     try:
         if not topic or not topic.strip():
-            return {"msg": "Topic cannot be empty."}
+            raise HTTPException(status_code=400, detail="Topic cannot be empty.")
             
         # Validate model selection
         if model not in ALLOWED_MODELS:
@@ -247,5 +242,7 @@ async def generate_from_topic(
             
         return questions
 
+    except HTTPException:
+        raise
     except Exception as e:
-        return {"msg": f"Failed to generate quiz: {str(e)}"}
+        raise HTTPException(status_code=500, detail=f"Failed to generate quiz: {str(e)}")
