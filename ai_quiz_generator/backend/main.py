@@ -36,6 +36,7 @@ DEFAULT_MODEL = ALLOWED_MODELS[0]
 
 
 @app.get("/")
+@app.head("/")
 def health():
     return {"status": "Backend Running"}
 
