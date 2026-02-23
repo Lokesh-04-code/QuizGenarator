@@ -14,11 +14,12 @@ def generate_true_false(context, n, model):
     llm = get_llm(model)
 
     prompt = f"""
-Generate {n} True/False questions.
+Generate EXACTLY {n} True/False questions. You MUST generate exactly {n} questions, no more, no less.
 
 STRICT RULES:
+- Generate EXACTLY {n} questions. Not {n-1}, not {n+1}. EXACTLY {n}.
 - Correct answer MUST be exactly "True" or "False".
-- Return ONLY JSON.
+- Return ONLY a valid JSON array, no extra text or explanation outside JSON.
 
 FORMAT:
 [

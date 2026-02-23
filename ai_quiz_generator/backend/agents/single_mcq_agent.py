@@ -14,13 +14,14 @@ def generate_single_mcq(context, n, model):
     llm = get_llm(model)
 
     prompt = f"""
-Generate {n} single correct MCQs.
+Generate EXACTLY {n} single correct MCQs. You MUST generate exactly {n} questions, no more, no less.
 
 STRICT RULES:
-- EXACTLY 4 options.
-- ONLY ONE correct answer.
-- correct_answer MUST match one option EXACTLY.
-- Return ONLY JSON.
+- Generate EXACTLY {n} questions. Not {n-1}, not {n+1}. EXACTLY {n}.
+- EXACTLY 4 options per question.
+- ONLY ONE correct answer per question.
+- correct_answer MUST match one option EXACTLY (word for word).
+- Return ONLY a valid JSON array, no extra text or explanation outside JSON.
 
 FORMAT:
 [

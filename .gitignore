@@ -1,6 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables (API keys!)
+.env
+.env.*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js (frontend)
 node_modules/
 bower_components/
+
+# Logs
 *.log
 
-build/
-dist/
+# FAISS index (generated at runtime)
+faiss_index/
+
+# Temp files
+temp_docs/
+
+# Streamlit
+.streamlit/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test outputs
+test_output*.txt
+test_unified_output*.txt

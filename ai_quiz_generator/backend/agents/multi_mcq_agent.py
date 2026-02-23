@@ -14,14 +14,14 @@ def generate_multi_mcq(context, n, model):
     llm = get_llm(model)
 
     prompt = f"""
-Generate {n} multi-select MCQs.
+Generate EXACTLY {n} multi-select MCQs. You MUST generate exactly {n} questions, no more, no less.
 
 STRICT RULES:
-- EXACTLY 4 options.
-- At least 1 correct answer.
-- Maximum 4 correct answers.
-- correct_answers MUST match options EXACTLY.
-- Return ONLY JSON.
+- Generate EXACTLY {n} questions. Not {n-1}, not {n+1}. EXACTLY {n}.
+- EXACTLY 4 options per question.
+- At least 1 correct answer, maximum 4 correct answers.
+- correct_answers MUST match options EXACTLY (word for word).
+- Return ONLY a valid JSON array, no extra text or explanation outside JSON.
 
 FORMAT:
 [

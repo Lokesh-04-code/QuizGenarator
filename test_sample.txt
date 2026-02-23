@@ -1,0 +1,11 @@
+
+Artificial Intelligence (AI) is the simulation of human intelligence by machines.
+Machine Learning is a subset of AI that allows systems to learn from data.
+Deep Learning uses neural networks with many layers to analyze complex patterns.
+Natural Language Processing (NLP) enables computers to understand human language.
+Computer Vision allows machines to interpret and make decisions from visual data.
+Reinforcement Learning is a type of ML where agents learn by trial and error.
+Supervised Learning uses labeled data to train models for predictions.
+Unsupervised Learning finds hidden patterns in data without labels.
+Transfer Learning reuses a model trained on one task for another related task.
+GPT stands for Generative Pre-trained Transformer, a large language model architecture.
