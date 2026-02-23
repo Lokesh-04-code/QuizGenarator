@@ -13,13 +13,11 @@ from graph.graph_builder import build_graph
 
 app = FastAPI(title="AI Quiz Generator API", version="1.0.0")
 
-# CORS configuration
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:3000").split(",")
-
+# CORS configuration - Allow all origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
