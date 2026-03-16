@@ -21,14 +21,15 @@ STRICT RULES:
 - EXACTLY 4 options per question.
 - At least 1 correct answer, maximum 4 correct answers.
 - correct_answers MUST match options EXACTLY (word for word).
+- Provide options as pure text ONLY. Do NOT prefix options with letters or numbers (e.g., do NOT use 'A) ', 'B) ', '1. ', etc.). Just the exact option text itself.
 - Return ONLY a valid JSON array, no extra text or explanation outside JSON.
 
 FORMAT:
 [
   {{
     "question": "",
-    "options": ["A","B","C","D"],
-    "correct_answers": ["A","C"],
+    "options": ["Option text 1", "Option text 2", "Option text 3", "Option text 4"],
+    "correct_answers": ["Option text 1", "Option text 3"],
     "explanation": ""
   }}
 ]
