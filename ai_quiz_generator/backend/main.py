@@ -36,7 +36,7 @@ else:
 graph = build_graph()
 
 ALLOWED_MODELS = [
-    "llama-3.3-70b-versatile",
+    "openai/gpt-oss-120b",
     "llama-3.1-8b-instant",
     "gemma2-9b-it",
     "llama-3.2-3b-preview",
